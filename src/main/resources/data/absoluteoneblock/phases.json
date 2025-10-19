@@ -1,0 +1,119 @@
+{
+  "phases": [
+    {
+      "name": "Surface",
+      "description": "Basic survival - wood, stone, food",
+      "blocks": {
+        "minecraft:dirt": 25, "minecraft:grass_block": 20, "minecraft:stone": 15, "minecraft:cobblestone": 10,
+        "minecraft:oak_log": 12, "minecraft:oak_leaves": 8, "minecraft:sand": 8, "minecraft:gravel": 6,
+        "minecraft:clay": 4, "minecraft:coal_ore": 5, "minecraft:iron_ore": 2,
+        "minecraft:chest": { "weight": 3, "loot_table": "minecraft:chests/village/village_plains_house" },
+        "absoluteoneblock:starter_chest": { "weight": 5, "loot_table": "absoluteoneblock:chests/starting_treasure", "once": true }
+      },
+      "mobs": {
+        "minecraft:cow": 8, "minecraft:pig": 7, "minecraft:sheep": 8, "minecraft:chicken": 6,
+        "minecraft:zombie": 2, "minecraft:skeleton": 2, "minecraft:creeper": 1
+      },
+      "mob_spawn_chance": 0.04,
+      "blocks_needed": 0,
+      "end_of_phase_rewards": {
+        "message": {"text": "You feel the ground beneath you rumble. Time to start mining!", "color": "yellow"},
+        "commands": ["/give @p minecraft:stone_pickaxe 1", "/give @p minecraft:bread 8"]
+      }
+    },
+    {
+      "name": "Mining",
+      "description": "Underground resources and ores",
+      "blocks": {
+        "minecraft:stone": 20, "minecraft:deepslate": 12, "minecraft:coal_ore": 10, "minecraft:iron_ore": 8,
+        "minecraft:copper_ore": 6, "minecraft:gold_ore": 3, "minecraft:diamond_ore": 1.5, "minecraft:lapis_ore": 3,
+        "minecraft:redstone_ore": 4, "minecraft:emerald_ore": 0.8, "minecraft:granite": 5, "minecraft:diorite": 5,
+        "minecraft:chest": { "weight": 4, "loot_table": "minecraft:chests/abandoned_mineshaft" },
+        "absoluteoneblock:random_ore": 5
+      },
+      "mobs": { "minecraft:zombie": 6, "minecraft:skeleton": 6, "minecraft:creeper": 4, "minecraft:spider": 5 },
+      "mob_spawn_chance": 0.06,
+      "blocks_needed": 500,
+      "end_of_phase_rewards": {
+        "message": {"text": "You've mastered the caves. The world outside calls to you.", "color": "aqua"},
+        "loot_table": "mining_gear"
+      }
+    },
+    {
+      "name": "Exploration",
+      "description": "Diverse materials from different biomes",
+      "blocks": {
+        "minecraft:oak_log": 8, "minecraft:spruce_log": 8, "minecraft:jungle_log": 8, "minecraft:sand": 15,
+        "minecraft:terracotta": 6, "minecraft:snow_block": 10, "minecraft:ice": 8, "minecraft:clay": 8,
+        "minecraft:mud": 6, "minecraft:slime_block": 2,
+        "absoluteoneblock:jungle_chest": { "weight": 1, "loot_table": "minecraft:chests/jungle_temple" },
+        "absoluteoneblock:desert_chest": { "weight": 1, "loot_table": "minecraft:chests/desert_pyramid" },
+        "absoluteoneblock:random_log": 6
+      },
+      "mobs": { "minecraft:rabbit": 4, "minecraft:fox": 3, "minecraft:polar_bear": 2, "minecraft:witch": 2 },
+      "mob_spawn_chance": 0.05,
+      "blocks_needed": 1500,
+      "end_of_phase_rewards": {
+        "message": {"text": "An ancient power awakens...", "color": "dark_purple"},
+        "commands": ["/give @p minecraft:diamond_pickaxe 1", "/give @p minecraft:ender_pearl 4"]
+      }
+    },
+    {
+      "name": "Nether",
+      "description": "Interdimensional travel and nether resources",
+      "blocks": {
+        "minecraft:netherrack": 20, "minecraft:blackstone": 8, "minecraft:basalt": 10, "minecraft:soul_sand": 8,
+        "minecraft:nether_quartz_ore": 8, "minecraft:nether_gold_ore": 6, "minecraft:glowstone": 4,
+        "absoluteoneblock:fortress_chest": { "weight": 2, "loot_table": "minecraft:chests/nether_bridge" },
+        "absoluteoneblock:bastion_chest": { "weight": 1, "loot_table": "minecraft:chests/bastion_treasure" }
+      },
+      "mobs": { "minecraft:zombified_piglin": 8, "minecraft:piglin": 6, "minecraft:blaze": 5, "minecraft:wither_skeleton": 4 },
+      "mob_spawn_chance": 0.6,
+      "blocks_needed": 3000,
+      "end_of_phase_rewards": {
+        "message": {"text": "You have conquered the Nether. The final dimension calls.", "color": "red"},
+        "commands": ["/give @p minecraft:wither_skeleton_skull 1", "/give @p minecraft:netherite_upgrade_smithing_template 1"]
+      }
+    },
+    {
+      "name": "End",
+      "description": "The final dimension",
+      "blocks": {
+        "minecraft:end_stone": 25, "minecraft:purpur_block": 10, "minecraft:end_rod": 6, "minecraft:obsidian": 8,
+        "minecraft:shulker_box": 3,
+        "minecraft:chest": { "weight": 3, "loot_table": "minecraft:chests/end_city_treasure" },
+        "absoluteoneblock:random_ore": 5,
+        "absoluteoneblock:random_log": 5
+      },
+      "mobs": { "minecraft:enderman": 12, "minecraft:shulker": 6, "absoluteoneblock:warden_spawn": {"weight": 0.02} },
+      "mob_spawn_chance": 0.08,
+      "blocks_needed": 5000,
+      "end_of_phase_rewards": {
+        "message": {"text": "VICTORY! The End is yours. True mastery awaits.", "color": "gold"},
+        "loot_table": "end_completion"
+      }
+    },
+    {
+      "name": "Mastery",
+      "description": "Ultimate rewards - best of everything",
+      "blocks": {
+        "minecraft:diamond_block": 5, "minecraft:emerald_block": 4, "minecraft:netherite_block": 2,
+        "minecraft:gold_block": 6, "minecraft:iron_block": 8, "minecraft:beacon": 1, "minecraft:conduit": 1,
+        "minecraft:chest": { "weight": 1, "loot_table": "absoluteoneblock:chests/mastery_treasure"}
+      },
+      "mobs": { "minecraft:villager": 8, "minecraft:iron_golem": 3, "absoluteoneblock:warden_spawn": {"weight": 0.02} },
+      "mob_spawn_chance": 0.02,
+      "blocks_needed": 8000,
+      "end_of_phase_rewards": {
+        "message": {"text": "You have achieved true mastery. The world is yours to command.", "color": "light_purple"},
+        "loot_table": "mastery_gear"
+      }
+    },
+    {
+      "name": "Infinity",
+      "description": "Endless cycle with all resources",
+      "blocks_needed": 10000,
+      "repeatable": true
+    }
+  ]
+}

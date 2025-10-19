@@ -1,0 +1,26 @@
+{
+  "parent": "absoluteoneblock:phases/enter_exploration",
+  "display": {
+    "icon": {
+      "item": "minecraft:netherrack"
+    },
+    "title": {
+      "translate": "advancements.absoluteoneblock.phases.enter_nether.title"
+    },
+    "description": {
+      "translate": "advancements.absoluteoneblock.phases.enter_nether.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 100
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "parent": "absoluteoneblock:root",
+  "display": {
+    "icon": {
+      "item": "absoluteoneblock:heart_of_the_void"
+    },
+    "title": {
+      "translate": "advancements.absoluteoneblock.collection.heart_of_the_void.title"
+    },
+    "description": {
+      "translate": "advancements.absoluteoneblock.collection.heart_of_the_void.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "has_heart": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": ["absoluteoneblock:heart_of_the_void"]
+          }
+        ]
+      }
+    }
+  },
+  "rewards": {
+    "experience": 100
+  }
+}

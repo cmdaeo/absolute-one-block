@@ -1,0 +1,26 @@
+{
+  "parent": "absoluteoneblock:phases/enter_end",
+  "display": {
+    "icon": {
+      "item": "minecraft:diamond_block"
+    },
+    "title": {
+      "translate": "advancements.absoluteoneblock.phases.enter_mastery.title"
+    },
+    "description": {
+      "translate": "advancements.absoluteoneblock.phases.enter_mastery.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 250
+  }
+}

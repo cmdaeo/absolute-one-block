@@ -1,0 +1,102 @@
+{
+  "parent": "absoluteoneblock:root",
+  "display": {
+    "icon": {
+      "item": "minecraft:diamond_ore"
+    },
+    "title": {
+      "translate": "advancements.absoluteoneblock.collection.all_ores.title"
+    },
+    "description": {
+      "translate": "advancements.absoluteoneblock.collection.all_ores.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "coal_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:coal_ore"]}]
+      }
+    },
+    "iron_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:iron_ore"]}]
+      }
+    },
+    "copper_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:copper_ore"]}]
+      }
+    },
+    "gold_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:gold_ore"]}]
+      }
+    },
+    "redstone_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:redstone_ore"]}]
+      }
+    },
+    "emerald_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:emerald_ore"]}]
+      }
+    },
+    "lapis_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:lapis_ore"]}]
+      }
+    },
+    "diamond_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:diamond_ore"]}]
+      }
+    },
+    "nether_quartz_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:nether_quartz_ore"]}]
+      }
+    },
+    "nether_gold_ore": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:nether_gold_ore"]}]
+      }
+    },
+    "ancient_debris": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:ancient_debris"]}]
+      }
+    }
+  },
+  "requirements": [
+    ["coal_ore"],
+    ["iron_ore"],
+    ["copper_ore"],
+    ["gold_ore"],
+    ["redstone_ore"],
+    ["emerald_ore"],
+    ["lapis_ore"],
+    ["diamond_ore"],
+    ["nether_quartz_ore"],
+    ["nether_gold_ore"],
+    ["ancient_debris"]
+  ],
+  "rewards": {
+    "experience": 2000
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "parent": "absoluteoneblock:phases/enter_mastery",
+  "display": {
+    "icon": {
+      "item": "minecraft:nether_star"
+    },
+    "title": {
+      "translate": "advancements.absoluteoneblock.phases.infinity.title"
+    },
+    "description": {
+      "translate": "advancements.absoluteoneblock.phases.infinity.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 500
+  }
+}

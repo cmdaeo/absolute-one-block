@@ -1,0 +1,26 @@
+{
+  "parent": "absoluteoneblock:phases/enter_mining",
+  "display": {
+    "icon": {
+      "item": "minecraft:oak_log"
+    },
+    "title": {
+      "translate": "advancements.absoluteoneblock.phases.enter_exploration.title"
+    },
+    "description": {
+      "translate": "advancements.absoluteoneblock.phases.enter_exploration.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 50
+  }
+}

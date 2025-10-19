@@ -1,0 +1,23 @@
+{
+  "parent": "absoluteoneblock:challenges/hundred_blocks",
+  "display": {
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "title": {
+      "translate": "advancements.absoluteoneblock.challenges.thousand_blocks.title"
+    },
+    "description": {
+      "translate": "advancements.absoluteoneblock.challenges.thousand_blocks.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:impossible"
+    }
+  }
+}

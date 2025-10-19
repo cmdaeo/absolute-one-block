@@ -1,0 +1,26 @@
+{
+  "parent": "absoluteoneblock:phases/enter_nether",
+  "display": {
+    "icon": {
+      "item": "minecraft:end_stone"
+    },
+    "title": {
+      "translate": "advancements.absoluteoneblock.phases.enter_end.title"
+    },
+    "description": {
+      "translate": "advancements.absoluteoneblock.phases.enter_end.description"
+    },
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 150
+  }
+}

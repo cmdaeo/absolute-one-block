@@ -1,0 +1,7 @@
+{
+  "type": "absoluteoneblock:add_item",
+  "item": "absoluteoneblock:heart_of_the_void",
+  "chance": 0.25,
+  "chests_only": true,
+  "conditions": []
+}

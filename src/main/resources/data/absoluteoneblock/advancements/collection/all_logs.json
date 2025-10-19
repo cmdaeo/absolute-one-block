@@ -1,0 +1,95 @@
+{
+  "parent": "absoluteoneblock:root",
+  "display": {
+    "icon": {
+      "item": "minecraft:oak_log"
+    },
+    "title": {
+      "translate": "advancements.absoluteoneblock.collection.all_logs.title"
+    },
+    "description": {
+      "translate": "advancements.absoluteoneblock.collection.all_logs.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "oak_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:oak_log"]}]
+      }
+    },
+    "spruce_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:spruce_log"]}]
+      }
+    },
+    "birch_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:birch_log"]}]
+      }
+    },
+    "jungle_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:jungle_log"]}]
+      }
+    },
+    "acacia_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:acacia_log"]}]
+      }
+    },
+    "dark_oak_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:dark_oak_log"]}]
+      }
+    },
+    "mangrove_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:mangrove_log"]}]
+      }
+    },
+    "cherry_log": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:cherry_log"]}]
+      }
+    },
+    "crimson_stem": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:crimson_stem"]}]
+      }
+    },
+    "warped_stem": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [{"items": ["minecraft:warped_stem"]}]
+      }
+    }
+  },
+  "requirements": [
+    ["oak_log"],
+    ["spruce_log"],
+    ["birch_log"],
+    ["jungle_log"],
+    ["acacia_log"],
+    ["dark_oak_log"],
+    ["mangrove_log"],
+    ["cherry_log"],
+    ["crimson_stem"],
+    ["warped_stem"]
+  ],
+  "rewards": {
+    "experience": 2000
+  }
+}

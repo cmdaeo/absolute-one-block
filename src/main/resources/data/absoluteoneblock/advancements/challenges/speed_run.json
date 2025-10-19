@@ -1,0 +1,26 @@
+{
+  "parent": "absoluteoneblock:root",
+  "display": {
+    "icon": {
+      "item": "minecraft:clock"
+    },
+    "title": {
+      "translate": "advancements.absoluteoneblock.challenges.speed_run.title"
+    },
+    "description": {
+      "translate": "advancements.absoluteoneblock.challenges.speed_run.description"
+    },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": true,
+    "hidden": false
+  },
+  "criteria": {
+    "requirement": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {
+    "experience": 2000
+  }
+}

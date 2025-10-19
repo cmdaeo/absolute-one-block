@@ -23,9 +23,7 @@ import net.minecraftforge.network.NetworkHooks;
 import javax.annotation.Nullable;
 
 public class PlatformBuilderToolItem extends Item implements MenuProvider {
-
-    // Max total blocks the tool can place in one activation: 64 stacks * 9 slots = 576 blocks
-    public static final int MAX_BLOCKS = 64 * 9; // 576
+    public static final int MAX_BLOCKS = 64 * 9; 
     private static final String NBT_WIDTH = "PlatformWidth";
     private static final String NBT_HEIGHT = "PlatformHeight";
 
@@ -33,9 +31,6 @@ public class PlatformBuilderToolItem extends Item implements MenuProvider {
         super(properties.stacksTo(1).durability(256));
     }
 
-    // ----------------------------
-    // Size getters/setters (public so client input/packets can call them)
-    // ----------------------------
     public static int getPlatformWidth(ItemStack stack) {
         CompoundTag tag = stack.getTag();
         return tag != null && tag.contains(NBT_WIDTH) ? Math.max(1, tag.getInt(NBT_WIDTH)) : 3;
@@ -46,20 +41,16 @@ public class PlatformBuilderToolItem extends Item implements MenuProvider {
         return tag != null && tag.contains(NBT_HEIGHT) ? Math.max(1, tag.getInt(NBT_HEIGHT)) : 3;
     }
 
-    // Clamps width/height to be >=1 and area <= MAX_BLOCKS
     public static void setPlatformSize(ItemStack stack, int width, int height) {
         width = Math.max(1, width);
         height = Math.max(1, height);
 
-        // Clamp area to MAX_BLOCKS (preserve aspect if possible by shrinking the larger dimension first)
         long area = (long) width * (long) height;
         if (area > MAX_BLOCKS) {
-            // Reduce the larger dimension proportionally
             double scale = Math.sqrt((double) MAX_BLOCKS / (double) area);
             int newWidth = Math.max(1, (int) Math.floor(width * scale));
             int newHeight = Math.max(1, (int) Math.floor(height * scale));
 
-            // In rare cases floor() can still leave area slightly > MAX_BLOCKS due to rounding; enforce strictly
             while ((long) newWidth * (long) newHeight > MAX_BLOCKS) {
                 if (newWidth >= newHeight && newWidth > 1) newWidth--;
                 else if (newHeight > 1) newHeight--;
@@ -74,14 +65,10 @@ public class PlatformBuilderToolItem extends Item implements MenuProvider {
         tag.putInt(NBT_HEIGHT, height);
     }
 
-    // ----------------------------
-    // Use behavior
-    // ----------------------------
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
 
-        // Shift + right-click: open the tool inventory GUI (your menu)
         if (player.isShiftKeyDown()) {
             if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
                 NetworkHooks.openScreen(serverPlayer, this, buf -> buf.writeItem(stack));
@@ -89,7 +76,6 @@ public class PlatformBuilderToolItem extends Item implements MenuProvider {
             return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
         }
 
-        // Right-click: place platform
         if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
             boolean success = buildPlatform(serverPlayer, stack);
             if (success) {
@@ -100,9 +86,6 @@ public class PlatformBuilderToolItem extends Item implements MenuProvider {
         return InteractionResultHolder.fail(stack);
     }
 
-    // ----------------------------
-    // Platform placement core
-    // ----------------------------
     @SuppressWarnings("null")
     private boolean buildPlatform(ServerPlayer player, ItemStack tool) {
         IItemHandler handler = tool.getCapability(ForgeCapabilities.ITEM_HANDLER).orElse(null);
@@ -111,7 +94,7 @@ public class PlatformBuilderToolItem extends Item implements MenuProvider {
         final int width = getPlatformWidth(tool);
         final int height = getPlatformHeight(tool);
         final long area = (long) width * (long) height;
-        if (area > MAX_BLOCKS) return false; // Safety guard if external code set bad NBT
+        if (area > MAX_BLOCKS) return false; 
 
         final int halfW = width / 2;
         final int halfH = height / 2;
@@ -120,25 +103,22 @@ public class PlatformBuilderToolItem extends Item implements MenuProvider {
         BlockPos base = player.blockPosition().below();
         boolean placedAny = false;
 
-        // Iterate rectangular region centered on player (x across, z forward/back)
         for (int dx = -halfW; dx <= halfW; dx++) {
             for (int dz = -halfH; dz <= halfH; dz++) {
                 BlockPos target = base.offset(dx, 0, dz);
                 if (!level.isEmptyBlock(target)) continue;
 
-                // Find first available block stack in the tool
                 for (int slot = 0; slot < handler.getSlots(); slot++) {
                     ItemStack blockStack = handler.getStackInSlot(slot);
                     if (blockStack.isEmpty() || !(blockStack.getItem() instanceof BlockItem blockItem)) continue;
 
                     BlockState state = blockItem.getBlock().defaultBlockState();
-                    // Optional: ensure the block can survive here (avoids placing into invalid states)
                     if (!state.canSurvive(level, target)) continue;
 
                     level.setBlock(target, state, 3);
                     handler.extractItem(slot, 1, false);
                     placedAny = true;
-                    break; // Move to the next target
+                    break; 
                 }
             }
         }
@@ -146,9 +126,6 @@ public class PlatformBuilderToolItem extends Item implements MenuProvider {
         return placedAny;
     }
 
-    // ----------------------------
-    // MenuProvider for opening the inventory GUI
-    // ----------------------------
     @Override
     public Component getDisplayName() {
         return Component.translatable("item.absoluteoneblock.platform_builder");

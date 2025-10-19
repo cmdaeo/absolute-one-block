@@ -22,7 +22,6 @@ import net.minecraftforge.fml.common.Mod;
 
 @Mod.EventBusSubscriber(modid = AbsoluteOneBlock.MOD_ID)
 public class PlayerEventHandler {
-
     private static final ResourceKey<Level> ONEBLOCK_DIM = ResourceKey.create(
         Registries.DIMENSION,
         ResourceLocation.fromNamespaceAndPath(AbsoluteOneBlock.MOD_ID, "oneblock_dimension")
@@ -33,27 +32,22 @@ public class PlayerEventHandler {
         if (event.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = player.serverLevel();
             
-            // If player is joining and is in the One Block dimension
             if (level.dimension().equals(ONEBLOCK_DIM)) {
-                // Get or create their spawn position
                 BlockPos spawnPos = GameModeManager.getPlayerBlockPosition(player);
                 
-                // In competitive mode, create their island if it doesn't exist
                 if (Config.isCompetitiveMode()) {
                     if (level.getBlockState(spawnPos).isAir()) {
                         GameModeManager.createPlayerIsland(level, spawnPos);
                     }
                 }
                 
-                // Teleport player to their spawn position (slightly above the block)
                 player.teleportTo(level, 
                     spawnPos.getX() + 0.5, 
-                    spawnPos.getY() + 1.5,  // Changed from +1 to +1.5 so they don't suffocate
+                    spawnPos.getY() + 1.5,  
                     spawnPos.getZ() + 0.5, 
                     0f, 0f);
             }
             
-            // Sync progress data
             syncInitialData(player);
         }
     }
@@ -63,19 +57,15 @@ public class PlayerEventHandler {
         if (event.getEntity() instanceof ServerPlayer player) {
             ServerLevel level = player.serverLevel();
             
-            // If player just entered the One Block dimension
             if (level.dimension().equals(ONEBLOCK_DIM)) {
-                // Get or create their spawn position
                 BlockPos spawnPos = GameModeManager.getPlayerBlockPosition(player);
                 
-                // In competitive mode, create their island if it doesn't exist
                 if (Config.isCompetitiveMode()) {
                     if (level.getBlockState(spawnPos).isAir()) {
                         GameModeManager.createPlayerIsland(level, spawnPos);
                     }
                 }
                 
-                // Teleport player to their spawn position
                 player.teleportTo(level, 
                     spawnPos.getX() + 0.5, 
                     spawnPos.getY() + 1.5, 
@@ -83,7 +73,6 @@ public class PlayerEventHandler {
                     0f, 0f);
             }
             
-            // Sync progress data
             syncInitialData(player);
         }
     }

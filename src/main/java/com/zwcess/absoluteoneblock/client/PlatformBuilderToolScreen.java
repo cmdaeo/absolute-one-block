@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
 public class PlatformBuilderToolScreen extends AbstractContainerScreen<PlatformBuilderToolMenu> {
-    // Change this to use the default Minecraft Dispenser texture
     private static final ResourceLocation TEXTURE = new ResourceLocation("minecraft", "textures/gui/container/dispenser.png");
 
     public PlatformBuilderToolScreen(PlatformBuilderToolMenu menu, Inventory playerInventory, Component title) {
@@ -36,7 +35,6 @@ public class PlatformBuilderToolScreen extends AbstractContainerScreen<PlatformB
 
     @Override
     protected void renderLabels(GuiGraphics graphics, int mouseX, int mouseY) {
-        // Use standard vanilla coordinates for the labels
         graphics.drawString(this.font, this.title, this.titleLabelX, 6, 4210752, false);
         graphics.drawString(this.font, this.playerInventoryTitle, this.inventoryLabelX, this.imageHeight - 94, 4210752, false);
     }

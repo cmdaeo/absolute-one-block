@@ -23,7 +23,6 @@ public class ProgressManager extends SavedData {
     private Map<UUID, PlayerPhaseData> playerProgressData = new HashMap<>();
     private Map<String, List<Integer>> playerIslandPositions = new HashMap<>();
 
-    // Use a single GSON instance
     private static final Gson GSON = new GsonBuilder().create();
 
     public static ProgressManager load(CompoundTag nbt) {
@@ -33,14 +32,12 @@ public class ProgressManager extends SavedData {
             manager.progressData = GSON.fromJson(json, WorldProgressData.class);
         }
 
-        // Conditionally load player data only if it exists
         if (nbt.contains("player_progress_json")) {
             String playerJson = nbt.getString("player_progress_json");
             Type type = new TypeToken<Map<UUID, PlayerPhaseData>>(){}.getType();
             manager.playerProgressData = GSON.fromJson(playerJson, type);
         }
         
-        // Ensure maps are never null after loading
         if (manager.playerProgressData == null) {
             manager.playerProgressData = new HashMap<>();
         }
@@ -61,19 +58,15 @@ public class ProgressManager extends SavedData {
 
     @Override
     public CompoundTag save(CompoundTag nbt) {
-        // Save global progress
         nbt.putString("oneblock_data_json", GSON.toJson(this.progressData));
 
-        // Always save island positions, as they are needed for competitive mode
         nbt.putString("island_positions_json", GSON.toJson(this.playerIslandPositions));
 
-        // Only save the per-player data map if in a competitive mode
         if (Config.isCompetitiveMode()) {
             String playerJson = GSON.toJson(this.playerProgressData);
             nbt.putString("player_progress_json", playerJson);
             LOGGER.debug("Saved per-player progress for competitive mode.");
         } else {
-            // If not in competitive mode, remove old player data to prevent conflicts
             if (nbt.contains("player_progress_json")) {
                 nbt.remove("player_progress_json");
                 LOGGER.debug("Removed old per-player progress data after switching to coop mode.");
@@ -92,7 +85,6 @@ public class ProgressManager extends SavedData {
         return this.progressData;
     }
 
-    // Add a getter for PhaseManager to access the player data map
     public Map<UUID, PlayerPhaseData> getPlayerProgressData() {
         return this.playerProgressData;
     }

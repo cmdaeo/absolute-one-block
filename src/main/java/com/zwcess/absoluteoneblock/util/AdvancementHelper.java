@@ -6,7 +6,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 
 public class AdvancementHelper {
-    
     public static void grantAdvancement(ServerPlayer player, String advancementPath) {
         ResourceLocation id = ResourceLocation.fromNamespaceAndPath(
             AbsoluteOneBlock.MOD_ID, 

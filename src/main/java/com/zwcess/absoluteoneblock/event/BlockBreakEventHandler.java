@@ -48,7 +48,6 @@ public class BlockBreakEventHandler {
     @SuppressWarnings("null")
     @SubscribeEvent
     public static void onBlockBroken(BlockEvent.BreakEvent event) {
-        // Early exit if client-side
         if (event.getLevel().isClientSide()) {
             return;
         }
@@ -57,9 +56,8 @@ public class BlockBreakEventHandler {
         ServerPlayer player = (ServerPlayer) event.getPlayer();
         BlockPos brokenPos = event.getPos();
         
-        // Check if this is the player's One Block (works for both coop and competitive)
         if (!GameModeManager.isPlayerOneBlock(player, brokenPos)) {
-            return; // Not their block, ignore it
+            return; 
         }
 
         event.setCanceled(true);
@@ -77,7 +75,6 @@ public class BlockBreakEventHandler {
             progressManager.markDirtyAndSave();
         }
 
-        // Handle drops for non-custom blocks
         if (!brokenState.is(Registration.ONE_BLOCK.get())) {
             if (player.hasCorrectToolForDrops(brokenState)) {
                 List<ItemStack> drops = Block.getDrops(brokenState, level, event.getPos(), null, player, player.getMainHandItem());
@@ -93,7 +90,6 @@ public class BlockBreakEventHandler {
                 12, 0.2, 0.2, 0.2, 0.15);
         }
 
-        // Place the next block or chest
         BlockPos playerBlockPos = GameModeManager.getPlayerBlockPosition(player);
         if (nextSpawn.isChest()) {
             placeLootChest(level, playerBlockPos, nextSpawn);
@@ -101,16 +97,13 @@ public class BlockBreakEventHandler {
             level.setBlock(playerBlockPos, nextSpawn.getBlock().defaultBlockState(), 3);
         }
 
-        // Damage the held item
         ItemStack heldItem = player.getMainHandItem();
         if (!player.isCreative() && heldItem.isDamageableItem()) {
             heldItem.hurtAndBreak(1, player, (p) -> p.broadcastBreakEvent(player.getUsedItemHand()));
         }
 
-        // Try to spawn a mob
         trySpawnMob(level, playerBlockPos.above(), phaseManager, player);
         
-        // Sync progress data based on game mode
         syncProgressData(level, player, phaseManager);
 
         if (Config.hasSharedProgress()) {
@@ -124,7 +117,6 @@ public class BlockBreakEventHandler {
     }
 
     private static void checkBlockMilestones(ServerPlayer player, int totalBlocks) {
-        // Grant achievements at specific milestones
         switch (totalBlocks) {
             case 1:
                 AdvancementHelper.grantAdvancement(player, "challenges/first_block");
@@ -143,7 +135,6 @@ public class BlockBreakEventHandler {
     
     private static void syncProgressData(ServerLevel level, ServerPlayer player, PhaseManager phaseManager) {
         if (Config.hasSharedProgress()) {
-            // Shared progress: send global data to everyone in the dimension
             Phase currentPhase = phaseManager.getCurrentPhase();
             Phase nextPhase = phaseManager.getNextPhase();
             
@@ -157,7 +148,6 @@ public class BlockBreakEventHandler {
                 PacketHandler.INSTANCE.send(PacketDistributor.DIMENSION.with(level::dimension), packet);
             }
         } else {
-            // Solo progress: send only to the player who broke the block
             PlayerPhaseData playerData = phaseManager.getPlayerData(player);
             Phase currentPhase = phaseManager.getPlayerCurrentPhase(player);
             Phase nextPhase = phaseManager.getPlayerNextPhase(player);

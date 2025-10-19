@@ -59,9 +59,7 @@ public class PhaseManager {
     private List<EntityType<?>> infinityMobCache;
 
     private ProgressManager progressManager;
-    
-    // Per-player progress tracking for Competitive Solo mode
-    //private final Map<UUID, PlayerPhaseData> playerProgress = new HashMap<>();
+
     private final Map<UUID, Integer> playerLastKnownPhase = new HashMap<>();
 
     public PhaseManager() {
@@ -162,14 +160,12 @@ public class PhaseManager {
 
         if (wasCompetitive != isNowCompetitive) {
             LOGGER.info("Game mode type has changed from {} to {}. Wiping world progression.", lastSavedMode, currentConfigMode);
-            // A switch between COOP and COMPETITIVE occurred. Wipe the world.
             worldData.blocksBroken = 0;
             worldData.spawnedOneTimeChests.clear();
             progressManager.getPlayerIslandPositions().clear();
             progressManager.getPlayerProgressData().clear();
         }
 
-        // After the check, update the "last known mode" to the current one for the next startup.
         worldData.lastKnownGameMode = currentConfigMode;
         progressManager.markDirtyAndSave();
 
@@ -187,13 +183,10 @@ public class PhaseManager {
 
             String path = registryName.getPath();
             
-            // Match blocks ending with "_ore" or containing "_ore_" (e.g., "coal_ore", "deepslate_iron_ore")
             if ((path.endsWith("_ore") || path.contains("_ore_")) && !isBlockInPhase(block, "Mining")) {
                 randomOreCache.add(block);
             }
             
-            // Match blocks ending with "_log" or containing "_log_" (e.g., "oak_log", "stripped_oak_log")
-            // Exclude stripped variants since they're processed logs
             if ((path.endsWith("_log") || path.contains("_log_")) && !path.contains("stripped") && !isBlockInPhase(block, "Exploration")) {
                 randomLogCache.add(block);
             }
@@ -219,13 +212,11 @@ public class PhaseManager {
         int logsAdded = 0;
 
         for (Phase phase : config.phases) {
-            // Add all blocks ending with "_ore" to the Mining phase
             if (phase.name.equalsIgnoreCase("Mining")) {
                 for (Block block : ForgeRegistries.BLOCKS) {
                     ResourceLocation registryName = ForgeRegistries.BLOCKS.getKey(block);
                     if (registryName != null) {
                         String path = registryName.getPath();
-                        // Match only blocks ending with "_ore" or containing "_ore_"
                         if (path.endsWith("_ore") || path.contains("_ore_")) {
                             if (phase.blocks.putIfAbsent(registryName.toString(), 1.0) == null) {
                                 oresAdded++;
@@ -234,13 +225,11 @@ public class PhaseManager {
                     }
                 }
             }
-            // Add all blocks ending with "_log" to the Exploration phase
             else if (phase.name.equalsIgnoreCase("Exploration")) {
                 for (Block block : ForgeRegistries.BLOCKS) {
                     ResourceLocation registryName = ForgeRegistries.BLOCKS.getKey(block);
                     if (registryName != null) {
                         String path = registryName.getPath();
-                        // Match only blocks ending with "_log" or containing "_log_", but not stripped
                         if ((path.endsWith("_log") || path.contains("_log_")) && !path.contains("stripped")) {
                             if (phase.blocks.putIfAbsent(registryName.toString(), 8.0) == null) {
                                 logsAdded++;
@@ -280,30 +269,24 @@ public class PhaseManager {
             infinityBlockCache.size(), infinityChestCache.size(), infinityMobCache.size());
     }
 
-    // NEW: Get phase data for a specific player
     public PlayerPhaseData getPlayerData(ServerPlayer player) {
         if (Config.isCoopMode() || Config.hasSharedProgress()) {
-            // For COOP and COMPETITIVE_SHARED, progress is global.
-            // We create a temporary "view" of this global progress.
             PlayerPhaseData sharedView = new PlayerPhaseData();
-            Phase currentPhase = getCurrentPhase(); // This uses global progress
+            Phase currentPhase = getCurrentPhase(); 
             int currentIndex = (currentPhase != null) ? config.phases.indexOf(currentPhase) : 0;
             sharedView.setCurrentPhase(currentIndex);
             sharedView.setBlocksBroken(progressManager.getData().blocksBroken);
-            // For one-time chests in competitive shared, we use the player's personal set
             if (Config.getGameMode() == Config.GameMode.COMPETITIVE_SHARED) {
                 sharedView.setSpawnedOneTimeChests(progressManager.getPlayerProgressData().computeIfAbsent(player.getUUID(), k -> new PlayerPhaseData()).getSpawnedOneTimeChests());
-            } else { // COOP mode
+            } else { 
                 sharedView.setSpawnedOneTimeChests(progressManager.getData().spawnedOneTimeChests);
             }
             return sharedView;
         } else {
-            // For COMPETITIVE_SOLO, get the unique, persistent data for this player.
             return progressManager.getPlayerProgressData().computeIfAbsent(player.getUUID(), k -> new PlayerPhaseData());
         }
     }
 
-    // NEW: Get current phase for a specific player
     public Phase getPlayerCurrentPhase(ServerPlayer player) {
         if (Config.hasSharedProgress()) {
             return getCurrentPhase();
@@ -314,7 +297,6 @@ public class PhaseManager {
         }
     }
 
-    // NEW: Get next phase for a specific player
     public Phase getPlayerNextPhase(ServerPlayer player) {
         if (Config.hasSharedProgress()) {
             return getNextPhase();
@@ -448,10 +430,8 @@ public class PhaseManager {
             }
         }
 
-        // --- FIX: Per-player one-time chest tracking for competitive modes ---
         Set<String> uniqueChestSet;
         if (Config.isCoopMode()) {
-            // Shared progress, all players share unique chests
             uniqueChestSet = worldData.spawnedOneTimeChests;
         } else {
             uniqueChestSet = getPlayerData((ServerPlayer) player).getSpawnedOneTimeChests();
@@ -461,7 +441,7 @@ public class PhaseManager {
         for (Map.Entry<String, Object> entry : blockProbabilities.entrySet()) {
             ChestData originalChestData = getOriginalChestData(entry.getKey(), currentPhase, nextPhase);
             if (originalChestData != null && originalChestData.once && uniqueChestSet.contains(entry.getKey())) {
-                continue; // Skip this chest if it's "once" and already in the player's (or global) set
+                continue; 
             }
             finalProbabilities.put(entry.getKey(), entry.getValue());
         }
@@ -497,7 +477,6 @@ public class PhaseManager {
                 if (originalChestData != null) {
                     if (originalChestData.once) {
                         uniqueChestSet.add(entry.getKey());
-                        // Mark the world file as dirty so the new data saves
                         progressManager.markDirtyAndSave();
                     }
                     return NextSpawn.of(originalChestData);

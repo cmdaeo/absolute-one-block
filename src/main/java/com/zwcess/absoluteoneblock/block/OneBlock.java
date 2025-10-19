@@ -1,4 +1,3 @@
-// main.java.com.zwcess.absoluteoneblock.block.OneBlock.java
 package com.zwcess.absoluteoneblock.block;
 
 import net.minecraft.world.level.block.Block;

@@ -49,7 +49,6 @@ public class AbsoluteOneBlock {
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        // Corrected: The method is now named 'load'.
         phaseManager.load(event.getServer());
         LOGGER.info("Absolute One Block systems are loaded for the server.");
     }

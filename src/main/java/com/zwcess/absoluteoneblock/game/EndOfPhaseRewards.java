@@ -1,9 +1,7 @@
-// main.java.com.zwcess.absoluteoneblock.game.EndOfPhaseRewards.java
 package com.zwcess.absoluteoneblock.game;
 
 import java.util.List;
 
-// Inner class for the message component
 class RewardMessage {
     public String text;
     public String color;

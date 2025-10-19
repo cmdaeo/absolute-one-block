@@ -18,8 +18,8 @@ public class OneBlockHudOverlay {
 
         int blocksBroken = ClientOneBlockData.getBlocksBroken();
         int blocksNeeded = ClientOneBlockData.getBlocksNeeded();
-        String phaseName = ClientOneBlockData.getCurrentPhaseName(); // You will need to add this to ClientOneBlockData
-        String nextPhaseName = ClientOneBlockData.getNextPhaseName(); // And this one too
+        String phaseName = ClientOneBlockData.getCurrentPhaseName(); 
+        String nextPhaseName = ClientOneBlockData.getNextPhaseName(); 
 
         String text;
         float progress = 0.0F;
@@ -38,10 +38,10 @@ public class OneBlockHudOverlay {
         int x = (screenWidth - barWidth) / 2;
         int y = 15;
 
-        guiGraphics.fill(x - 1, y - 1, x + barWidth + 1, y + barHeight + 1, 0xFF000000); // Black border
-        guiGraphics.fill(x, y, x + barWidth, y + barHeight, 0xFF404040); // Gray background
+        guiGraphics.fill(x - 1, y - 1, x + barWidth + 1, y + barHeight + 1, 0xFF000000); 
+        guiGraphics.fill(x, y, x + barWidth, y + barHeight, 0xFF404040); 
         if (progress > 0) {
-            guiGraphics.fill(x, y, x + (int)(progress * barWidth), y + barHeight, 0xFF00FF00); // Green progress
+            guiGraphics.fill(x, y, x + (int)(progress * barWidth), y + barHeight, 0xFF00FF00); 
         }
         
         int textWidth = mc.font.width(text);

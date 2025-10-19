@@ -1,4 +1,3 @@
-// main.java.com.zwcess.absoluteoneblock.dimension.OneBlockChunkGenerator.java
 package com.zwcess.absoluteoneblock.dimension;
 
 import com.mojang.serialization.Codec;
@@ -25,20 +24,17 @@ import java.util.concurrent.Executor;
 
 public class OneBlockChunkGenerator extends NoiseBasedChunkGenerator {
 
-    // --- THIS IS THE FINAL FIX ---
-    // We hold our own reference to the settings to provide a stable getter for the CODEC.
     private final Holder<NoiseGeneratorSettings> settingsHolder;
 
     public static final Codec<OneBlockChunkGenerator> CODEC = RecordCodecBuilder.create(instance ->
         instance.group(
             BiomeSource.CODEC.fieldOf("biome_source").forGetter(ChunkGenerator::getBiomeSource),
-            NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(g -> g.settingsHolder) // Use our own field
+            NoiseGeneratorSettings.CODEC.fieldOf("settings").forGetter(g -> g.settingsHolder) 
         ).apply(instance, OneBlockChunkGenerator::new));
-    // --- END OF FIX ---
 
     public OneBlockChunkGenerator(BiomeSource biomeSource, Holder<NoiseGeneratorSettings> settings) {
         super(biomeSource, settings);
-        this.settingsHolder = settings; // Store the settings locally
+        this.settingsHolder = settings; 
     }
 
     @Override
@@ -47,19 +43,14 @@ public class OneBlockChunkGenerator extends NoiseBasedChunkGenerator {
         return CODEC;
     }
 
-    // By extending NoiseBasedChunkGenerator, we get all the complex biome noise for free.
-    // We only need to override the methods that actually place blocks.
-
     @Override
     @Nonnull
     public CompletableFuture<ChunkAccess> fillFromNoise(@Nonnull Executor executor, @Nonnull Blender blender, @Nonnull RandomState randomState, @Nonnull StructureManager structureManager, @Nonnull ChunkAccess chunkAccess) {
-        // We override this method to do nothing, preventing terrain from generating and creating a void.
         return CompletableFuture.completedFuture(chunkAccess);
     }
 
     @Override
     public void buildSurface(@Nonnull WorldGenRegion level, @Nonnull StructureManager structureManager, @Nonnull RandomState randomState, @Nonnull ChunkAccess chunk) {
-        // Instead of building a surface, we use this hook to place our single starting block.
         if (chunk.getPos().x == 0 && chunk.getPos().z == 0) {
             BlockPos pos = new BlockPos(0, 100, 0);
             if (level.getBlockState(pos).isAir()) {
@@ -72,9 +63,8 @@ public class OneBlockChunkGenerator extends NoiseBasedChunkGenerator {
         }
     }
     
-    // We must also override getBaseHeight to prevent issues with structure placement checks in a void world.
     @Override
     public int getBaseHeight(int x, int z, @Nonnull Heightmap.Types types, @Nonnull LevelHeightAccessor level, @Nonnull RandomState randomState) {
-        return 0; // Return 0 for void world stability.
+        return 0; 
     }
 }

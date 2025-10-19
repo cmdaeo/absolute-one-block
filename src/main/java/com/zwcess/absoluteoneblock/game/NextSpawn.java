@@ -1,4 +1,3 @@
-// main.java.com.zwcess.absoluteoneblock.game.NextSpawn.java
 package com.zwcess.absoluteoneblock.game;
 
 import net.minecraft.world.level.block.Block;
@@ -13,7 +12,6 @@ public class NextSpawn {
         this.chestData = chestData;
     }
 
-    // Factory methods for clean creation
     public static NextSpawn of(Block block) {
         return new NextSpawn(block, null);
     }

@@ -1,4 +1,3 @@
-// main.java.com.zwcess.absoluteoneblock.core.ModCreativeTabs.java
 package com.zwcess.absoluteoneblock.core;
 
 import com.zwcess.absoluteoneblock.AbsoluteOneBlock;

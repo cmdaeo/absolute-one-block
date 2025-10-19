@@ -39,7 +39,6 @@ public class PlayerPhaseData {
         tag.putInt("Phase", currentPhase);
         tag.putInt("Blocks", blocksBroken);
 
-        // Save spawned one-time chests as a string list
         ListTag listTag = new ListTag();
         for (String key : spawnedOneTimeChests) {
             listTag.add(StringTag.valueOf(key));
@@ -55,7 +54,7 @@ public class PlayerPhaseData {
 
         Set<String> chests = new HashSet<>();
         if (tag.contains("SpawnedOneTimeChests")) {
-            ListTag listTag = tag.getList("SpawnedOneTimeChests", 8); // 8 = String
+            ListTag listTag = tag.getList("SpawnedOneTimeChests", 8); 
             chests = listTag.stream()
                     .map(nbt -> nbt.getAsString())
                     .collect(Collectors.toSet());

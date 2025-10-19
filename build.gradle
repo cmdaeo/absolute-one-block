@@ -21,40 +21,28 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.20.1-47.4.0'
 }
 
-/*sourceSets {
-    main {
-        resources {
-            srcDirs "src/main/resources"
-        }
-    }
-}*/
-
-// --- THIS IS THE CORRECTED COPY TASK ---
-
-// Define a new task that will handle copying the file
 task copyJarToMods {
-    // This ensures that the 'jar' task runs first, so we have a file to copy
     dependsOn jar
-    
-    // The 'doLast' block contains code that will run at the end of the task's execution
-    doLast {
-        // Define a list of all the folders you want to copy the mod to
-        def destinationFolders = [
-            'C:/Users/Lenovo/OneDrive - Universidade de Aveiro/Desktop/forgeServer/mods',
-            'C:/Users/Lenovo/AppData/Roaming/.minecraft/mods'
-        ]
 
-        // Loop through each destination folder
-        destinationFolders.each { dest ->
-            // Perform a copy action for each destination
-            copy {
-                from jar.archiveFile
-                into dest
-                println ">> Copied ${jar.archiveFile.get().asFile.name} to ${dest}"
+    doLast {
+        if (project.hasProperty('copyJarDestinations')) {
+            def destinations = project.property('copyJarDestinations').split(',')
+
+            destinations.each { dest ->
+                def cleanDest = dest.trim()
+                
+                if (!cleanDest.isEmpty()) {
+                    copy {
+                        from jar.archiveFile
+                        into cleanDest
+                        println ">> Copied ${jar.archiveFile.get().asFile.name} to ${cleanDest}"
+                    }
+                }
             }
+        } else {
+            println ">> 'copyJarDestinations' not set in gradle.properties, skipping auto-copy."
         }
     }
 }
 
-// This tells Gradle to run our 'copyJarToMods' task automatically after the 'build' task finishes
 build.finalizedBy copyJarToMods

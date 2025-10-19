@@ -38,27 +38,23 @@ public class AddItemModifier extends LootModifier {
 
     @Override
     protected @NotNull ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
-        // Check if we should only affect chests
         if (chestsOnly) {
             ResourceLocation lootTable = context.getQueriedLootTableId();
             if (lootTable == null || !lootTable.getPath().contains("chests/")) {
-                return generatedLoot; // Not a chest, skip
+                return generatedLoot; 
             }
         }
 
-        // Check random chance
         if (context.getRandom().nextDouble() > chance) {
-            return generatedLoot; // Failed chance roll
+            return generatedLoot; 
         }
 
-        // Check other conditions
         for (LootItemCondition condition : this.conditions) {
             if (!condition.test(context)) {
                 return generatedLoot;
             }
         }
 
-        // Add the item
         generatedLoot.add(new ItemStack(this.item));
         return generatedLoot;
     }

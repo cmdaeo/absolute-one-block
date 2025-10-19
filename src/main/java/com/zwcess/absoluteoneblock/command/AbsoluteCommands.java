@@ -34,18 +34,13 @@ public class AbsoluteCommands {
                 ProgressManager progressManager = PhaseManager.INSTANCE.getProgressManager();
                 IslandManager islandManager = new IslandManager(progressManager);
 
-                // --- THIS IS THE KEY LOGIC ---
-                // 1. ALWAYS get or create the persistent island position for the player.
                 BlockPos islandPos = islandManager.getOrCreateIslandPosition(player);
-                
-                // 2. Check if a block exists at that position. If not, create it.
-                // This prevents creating a second block if the player already has one.
+
                 if (dimension.getBlockState(islandPos).isAir()) {
                     dimension.setBlock(islandPos, Blocks.DIRT.defaultBlockState(), 3);
                     player.sendSystemMessage(Component.literal("Welcome! Your island has been created."));
                 }
 
-                // 3. Teleport the player to their one and only island position.
                 player.teleportTo(dimension,
                     islandPos.getX() + 0.5,
                     islandPos.getY() + 1.0,
@@ -57,13 +52,11 @@ public class AbsoluteCommands {
                 return 1;
             }))
 
-            // Subcommand: /oneblock leave
             .then(Commands.literal("leave").executes((command) -> {
                 ServerPlayer player = command.getSource().getPlayerOrException();
                 ServerLevel overworld = player.getServer().getLevel(ServerLevel.OVERWORLD);
 
                 if (overworld != null) {
-                    // Use spawn point for a safer exit
                     BlockPos spawnPoint = overworld.getSharedSpawnPos();
                     player.teleportTo(overworld, spawnPoint.getX(), spawnPoint.getY(), spawnPoint.getZ(), player.getYRot(), player.getXRot());
                     command.getSource().sendSuccess(() -> Component.literal("Teleported to Overworld."), false);
@@ -74,30 +67,26 @@ public class AbsoluteCommands {
                 }
             }))
             
-            // Subcommand: /oneblock reset
             .then(Commands.literal("reset")
                 .requires(source -> source.hasPermission(2))
                 .executes((command) -> {
-                    // This command should also reset island positions
                     ProgressManager progressManager = PhaseManager.INSTANCE.getProgressManager();
                     progressManager.getData().blocksBroken = 0;
                     progressManager.getData().spawnedOneTimeChests.clear();
-                    progressManager.getPlayerIslandPositions().clear(); // NEW: Clear island map
+                    progressManager.getPlayerIslandPositions().clear(); 
                     progressManager.markDirtyAndSave();
 
-                    PhaseManager.INSTANCE.resetPhase(); // Keep internal state reset if needed
+                    PhaseManager.INSTANCE.resetPhase(); 
                     command.getSource().sendSuccess(() -> Component.literal("Full One Block progression has been reset."), true);
                     return 1;
                 }))
             
-            // Subcommands: setphase, setblocks (no changes needed here, they work on global progress)
             .then(Commands.literal("setphase")
-            .requires(source -> source.hasPermission(2)) // Operator-level permission
-            .then(Commands.argument("phase", IntegerArgumentType.integer(0)) // Accepts a positive integer
+            .requires(source -> source.hasPermission(2)) 
+            .then(Commands.argument("phase", IntegerArgumentType.integer(0)) 
                 .executes((command) -> {
                     int phaseIndex = IntegerArgumentType.getInteger(command, "phase");
                     
-                    // Check if the game is in a mode that uses shared progress
                     if (!Config.hasSharedProgress()) {
                         command.getSource().sendFailure(Component.literal("This command only works in COOP or COMPETITIVE_SHARED modes."));
                         return 0;
@@ -113,14 +102,12 @@ public class AbsoluteCommands {
                     }
                 })))
 
-        // Subcommand: /oneblock setblocks <number_of_blocks>
             .then(Commands.literal("setblocks")
-                .requires(source -> source.hasPermission(2)) // Operator-level permission
-                .then(Commands.argument("blocks", IntegerArgumentType.integer(1)) // Accepts an integer greater than 0
+                .requires(source -> source.hasPermission(2)) 
+                .then(Commands.argument("blocks", IntegerArgumentType.integer(1)) 
                     .executes((command) -> {
                         int blocksNeeded = IntegerArgumentType.getInteger(command, "blocks");
 
-                        // Check if the game is in a mode that uses shared progress
                         if (!Config.hasSharedProgress()) {
                             command.getSource().sendFailure(Component.literal("This command only works in COOP or COMPETITIVE_SHARED modes."));
                             return 0;
@@ -132,7 +119,6 @@ public class AbsoluteCommands {
                         return 1;
                     })))
             
-            // Subcommand: /oneblock fix
             .then(Commands.literal("fix")
                 .executes((command) -> {
                     ServerPlayer player = command.getSource().getPlayerOrException();
@@ -143,7 +129,6 @@ public class AbsoluteCommands {
                         return 0;
                     }
                     
-                    // --- FIX: Use the same persistent logic as /enter to find the block ---
                     ProgressManager progressManager = PhaseManager.INSTANCE.getProgressManager();
                     Config.GameMode currentMode = Config.getGameMode();
 
@@ -161,18 +146,16 @@ public class AbsoluteCommands {
                 })
             )
             
-            // --- FIX: /oneblock mode commands now save persistently ---
             .then(Commands.literal("mode")
                 .requires(source -> source.hasPermission(2))
                 .then(Commands.literal("coop")
                     .executes(context -> setGameMode(context.getSource(), Config.GameMode.COOP)))
-                .then(Commands.literal("competitive_shared") // Renamed for clarity
+                .then(Commands.literal("competitive_shared") 
                     .executes(context -> setGameMode(context.getSource(), Config.GameMode.COMPETITIVE_SHARED)))
-                .then(Commands.literal("competitive_solo") // Renamed for clarity
+                .then(Commands.literal("competitive_solo") 
                     .executes(context -> setGameMode(context.getSource(), Config.GameMode.COMPETITIVE_SOLO)))
             )
 
-            // --- NEW: Command to control island distribution ---
             .then(Commands.literal("settings")
                 .requires(source -> source.hasPermission(2))
                 .then(Commands.literal("distribution")
@@ -180,7 +163,7 @@ public class AbsoluteCommands {
                         .executes(context -> {
                             boolean isEqual = BoolArgumentType.getBool(context, "equal");
                             Config.EQUALLY_DISTRIBUTED.set(isEqual);
-                            // Configs are auto-saved, but a message is good practice.
+
                             context.getSource().sendSuccess(() -> Component.literal("Island distribution set to: " + (isEqual ? "Equal" : "Sequential")), true);
                             return 1;
                         })
@@ -190,9 +173,7 @@ public class AbsoluteCommands {
         );
     }
 
-    // Helper method to avoid repeating code for setting game mode
     private static int setGameMode(CommandSourceStack source, Config.GameMode mode) {
-        // Get the current mode from the config to see if we're actually changing anything
         Config.GameMode currentMode = Config.getGameMode();
 
         if (currentMode == mode) {
@@ -200,7 +181,6 @@ public class AbsoluteCommands {
             return 1;
         }
 
-        // Set the new value in the config file
         Config.GAME_MODE.set(mode);
 
         boolean wasCompetitive = (currentMode == Config.GameMode.COMPETITIVE_SHARED || currentMode == Config.GameMode.COMPETITIVE_SOLO);

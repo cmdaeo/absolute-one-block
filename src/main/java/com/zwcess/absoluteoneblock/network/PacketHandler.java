@@ -1,4 +1,3 @@
-// main.java.com.zwcess.absoluteoneblock.network.PacketHandler.java
 package com.zwcess.absoluteoneblock.network;
 
 import com.zwcess.absoluteoneblock.AbsoluteOneBlock;

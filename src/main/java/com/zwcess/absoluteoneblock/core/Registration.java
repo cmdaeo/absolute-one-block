@@ -1,4 +1,3 @@
-// main.java.com.zwcess.absoluteoneblock.core.Registration.java
 package com.zwcess.absoluteoneblock.core;
 
 import com.zwcess.absoluteoneblock.AbsoluteOneBlock;
@@ -25,7 +24,6 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 public class Registration {
-
         public static final DeferredRegister<Block> BLOCKS =
                 DeferredRegister.create(ForgeRegistries.BLOCKS, AbsoluteOneBlock.MOD_ID);
 

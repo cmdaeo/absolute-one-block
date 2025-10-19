@@ -1,4 +1,3 @@
-// main.java.com.zwcess.absoluteoneblock.event.ClientModEvents.java
 package com.zwcess.absoluteoneblock.event;
 
 import com.zwcess.absoluteoneblock.AbsoluteOneBlock;
